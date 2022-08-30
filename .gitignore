@@ -1,0 +1,7 @@
+.DS_Store
+srs/.DS_Store
+src/components/.DS_Store
+src/resources/.DS_Store
+src/resources/img/.DS_Store
+.idea
+./node_modules
