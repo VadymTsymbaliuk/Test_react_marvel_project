@@ -8,15 +8,14 @@ import PropTypes from 'prop-types';
 
 import './charInfo.scss';
 
-import MarvelService from "../../services/MarvelService";
+import useMarvelService from "../../services/MarvelService";
 
 const CharInfo = (props) => {
 
-    const [char, setChar] = useState(null),
-        [loading, setLoading] = useState(false),
-        [error, setError] = useState(false)
+    const [char, setChar] = useState(null)
 
-    const marvelService = new MarvelService();
+
+    const {loading, error, getCharacter, clearError} = useMarvelService();
 
 
     useEffect(() => {
@@ -24,30 +23,18 @@ const CharInfo = (props) => {
     }, [props.charId])
 
     const onCharLoaded = (char) => {
-
-        setChar(char)
-        setLoading(false)
-    }
-    const onCharLoading = (char) => {
         setChar(char)
     }
-    const onError = () => {
-        setLoading(false);
-        setError(true)
-    }
-
-
 //якщо немає id героя, то метод повертає null, оскільки у props його значення null
     const updateChar = () => {
         const {charId} = props;
         if (!charId) {
             return;
         }
-        onCharLoading();
-        marvelService
-            .getCharacter(charId)
-            .then(onCharLoaded)
-            .catch(onError);
+        clearError();
+
+        getCharacter(charId)
+            .then(onCharLoaded);
     }
 
     const skeleton = char || loading || error ? null : <Skeleton/>
